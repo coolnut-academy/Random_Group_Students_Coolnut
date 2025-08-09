@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>โปรแกรมสุ่มกลุ่มออนไลน์ - 3 โหมด</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'IBM Plex Sans Thai', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+        }
+        .card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease-in-out;
+        }
+        .neon-text {
+            color: #58a6ff;
+            text-shadow: 0 0 5px rgba(88, 166, 255, 0.7), 0 0 10px rgba(88, 166, 255, 0.5);
+        }
+        .input-dark, .textarea-dark {
+            background-color: #0d1117;
+            border: 1px solid #30363d;
+            color: #c9d1d9;
+            border-radius: 0.375rem;
+        }
+        .input-dark:focus, .textarea-dark:focus {
+            outline: none;
+            border-color: #58a6ff;
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.3);
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            border: 1px solid transparent;
+        }
+        .btn-primary {
+            background-color: #238636;
+            color: white;
+            border-color: #38a84a;
+        }
+        .btn-primary:hover {
+            background-color: #2ea043;
+            border-color: #56d364;
+        }
+        .btn-secondary {
+            background-color: #21262d;
+            color: #58a6ff;
+            border-color: #30363d;
+        }
+         .btn-secondary:hover {
+            background-color: #30363d;
+            border-color: #58a6ff;
+        }
+        .btn-danger {
+            background-color: #3e1111;
+            color: #f87171;
+            border-color: #da3633;
+        }
+        .btn-danger:hover {
+            background-color: #da3633;
+            color: white;
+            border-color: #f87171;
+        }
+        .btn-mode {
+            background-color: #21262d;
+            color: #8b949e;
+            border: 1px solid #30363d;
+            flex-grow: 1;
+        }
+        .btn-mode.active {
+            background-color: #1f6feb;
+            color: white;
+            border-color: #58a6ff;
+            font-weight: 700;
+        }
+
+        /* Animation Overlay Styles */
+        #animationOverlay { transition: opacity 0.3s ease-in-out; }
+        .spinner-container { height: 100px; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+        .spinner-column { display: flex; flex-direction: column; }
+        .spinner-column span { font-size: 2.5rem; font-weight: 700; line-height: 1.2; padding: 0.5rem 1rem; color: #58a6ff; text-shadow: 0 0 8px rgba(88, 166, 255, 0.8); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; }
+        @keyframes spin { from { transform: translateY(-90%); } to { transform: translateY(0%); } }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-5xl mx-auto">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold neon-text">โปรแกรมสุ่มกลุ่มออนไลน์</h1>
+            <p class="text-gray-400 mt-2">สุดยอดเครื่องมือจัดกลุ่ม 3 โหมดในหนึ่งเดียว</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Left Column: Input Source -->
+            <div class="card space-y-4">
+                <h2 class="text-xl font-semibold text-blue-300 border-b border-gray-700 pb-2">1. เลือกข้อมูลที่จะสุ่ม</h2>
+                <div class="flex space-x-2 bg-gray-900/50 p-1 rounded-lg">
+                    <button id="mainModeByNumberBtn" class="btn btn-mode">สุ่มตามเลขที่</button>
+                    <button id="mainModeByNameBtn" class="btn btn-mode">สุ่มตามรายชื่อ</button>
+                </div>
+
+                <!-- Number Input Area -->
+                <div id="numberModeContainer" class="space-y-4">
+                    <div>
+                        <label for="startNumber" class="block text-sm font-medium text-gray-300 mb-1">ตั้งแต่เลขที่:</label>
+                        <input type="number" id="startNumber" value="1" min="1" class="input-dark w-full p-2">
+                    </div>
+                    <div>
+                        <label for="endNumber" class="block text-sm font-medium text-gray-300 mb-1">ถึงเลขที่:</label>
+                        <input type="number" id="endNumber" value="20" min="1" class="input-dark w-full p-2">
+                    </div>
+                    <button id="generateListBtn" class="btn btn-secondary w-full">สร้าง/อัปเดตรายชื่อ</button>
+                    <div id="studentListContainer">
+                        <h3 class="text-lg font-semibold text-gray-300 mt-4 mb-2">เลือกนักเรียนที่มาเรียน:</h3>
+                        <div class="flex space-x-2 mb-4">
+                            <button id="selectAllBtn" class="btn btn-secondary btn-sm flex-grow">เลือกทั้งหมด</button>
+                            <button id="deselectAllBtn" class="btn btn-secondary btn-sm flex-grow">ไม่เลือกทั้งหมด</button>
+                        </div>
+                        <div id="studentList" class="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-8 gap-2"></div>
+                    </div>
+                </div>
+
+                <!-- Name Input Area -->
+                <div id="nameModeContainer" class="hidden space-y-2">
+                    <label for="nameInput" class="block text-sm font-medium text-gray-300">ใส่รายชื่อ (1 บรรทัด ต่อ 1 คน):</label>
+                    <textarea id="nameInput" rows="10" class="textarea-dark w-full p-2" placeholder="สมชาย&#10;สมหญิง&#10;สมศักดิ์"></textarea>
+                </div>
+            </div>
+
+            <!-- Right Column: Settings & Results -->
+            <div class="space-y-6">
+                <div class="card space-y-4">
+                    <h2 class="text-xl font-semibold text-blue-300 border-b border-gray-700 pb-2">2. กำหนดวิธีแบ่งกลุ่ม</h2>
+                    <div class="flex space-x-2 bg-gray-900/50 p-1 rounded-lg">
+                         <button id="subModeByGroupCountBtn" class="btn btn-mode">จำนวนกลุ่ม</button>
+                         <button id="subModeByMemberCountBtn" class="btn btn-mode">สมาชิก/กลุ่ม</button>
+                    </div>
+                     <div>
+                        <label for="countInput" id="countLabel" class="block text-sm font-medium text-gray-300 mb-1">จำนวนกลุ่มที่ต้องการ:</label>
+                        <input type="number" id="countInput" value="4" min="1" class="input-dark w-full p-2">
+                    </div>
+                    <button id="randomizeBtn" class="btn btn-primary w-full text-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M18 6l-4 4h3v4h-3l4 4"/><path d="M6 18l4-4H7v-4h3l-4-4"/></svg>
+                        สุ่มกลุ่มเลย!
+                    </button>
+                    <button id="resetBtn" class="btn btn-danger w-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                        รีเซ็ตค่าทั้งหมด
+                    </button>
+                </div>
+                <div class="card">
+                    <h2 class="text-xl font-semibold text-blue-300 border-b border-gray-700 pb-2">3. ผลการสุ่มกลุ่ม</h2>
+                    <div id="results" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                         <p class="text-gray-500 text-center col-span-full">กรอกข้อมูลแล้วกด "สุ่มกลุ่มเลย!"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Animation Overlay -->
+    <div id="animationOverlay" class="hidden fixed inset-0 bg-black bg-opacity-80 flex-col items-center justify-center z-50 p-4">
+        <div id="spinnerContainer" class="spinner-container flex space-x-2 sm:space-x-4"></div>
+        <p class="text-white text-2xl mt-6 font-semibold tracking-wider neon-text">กำลังสุ่มกลุ่ม...</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DOM Elements ---
+            const mainModeByNumberBtn = document.getElementById('mainModeByNumberBtn');
+            const mainModeByNameBtn = document.getElementById('mainModeByNameBtn');
+            const numberModeContainer = document.getElementById('numberModeContainer');
+            const nameModeContainer = document.getElementById('nameModeContainer');
+            const nameInput = document.getElementById('nameInput');
+            
+            const startNumberEl = document.getElementById('startNumber');
+            const endNumberEl = document.getElementById('endNumber');
+            const generateListBtn = document.getElementById('generateListBtn');
+            const studentListEl = document.getElementById('studentList');
+            const selectAllBtn = document.getElementById('selectAllBtn');
+            const deselectAllBtn = document.getElementById('deselectAllBtn');
+
+            const subModeByGroupCountBtn = document.getElementById('subModeByGroupCountBtn');
+            const subModeByMemberCountBtn = document.getElementById('subModeByMemberCountBtn');
+            const countInputEl = document.getElementById('countInput');
+            const countLabelEl = document.getElementById('countLabel');
+
+            const randomizeBtn = document.getElementById('randomizeBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const resultsEl = document.getElementById('results');
+            
+            const animationOverlay = document.getElementById('animationOverlay');
+            const spinnerContainer = document.getElementById('spinnerContainer');
+
+            // --- State ---
+            let mainMode = 'byNumber'; // 'byNumber' or 'byName'
+            let subMode = 'byGroupCount'; // 'byGroupCount' or 'byMemberCount'
+
+            // --- Functions ---
+            
+            const setMainMode = (mode) => {
+                mainMode = mode;
+                if (mode === 'byNumber') {
+                    mainModeByNumberBtn.classList.add('active');
+                    mainModeByNameBtn.classList.remove('active');
+                    numberModeContainer.classList.remove('hidden');
+                    nameModeContainer.classList.add('hidden');
+                } else { // byName
+                    mainModeByNameBtn.classList.add('active');
+                    mainModeByNumberBtn.classList.remove('active');
+                    nameModeContainer.classList.remove('hidden');
+                    numberModeContainer.classList.add('hidden');
+                }
+            };
+
+            const setSubMode = (mode) => {
+                subMode = mode;
+                if (mode === 'byGroupCount') {
+                    countLabelEl.textContent = 'จำนวนกลุ่มที่ต้องการ:';
+                    subModeByGroupCountBtn.classList.add('active');
+                    subModeByMemberCountBtn.classList.remove('active');
+                } else { // byMemberCount
+                    countLabelEl.textContent = 'จำนวนสมาชิกต่อกลุ่ม:';
+                    subModeByMemberCountBtn.classList.add('active');
+                    subModeByGroupCountBtn.classList.remove('active');
+                }
+            };
+
+            const resetAll = () => {
+                startNumberEl.value = '1';
+                endNumberEl.value = '20';
+                countInputEl.value = '4';
+                nameInput.value = '';
+                setMainMode('byNumber');
+                setSubMode('byGroupCount');
+                generateStudentCheckboxes();
+                resultsEl.innerHTML = '<p class="text-gray-500 text-center col-span-full">กรอกข้อมูลแล้วกด "สุ่มกลุ่มเลย!"</p>';
+            };
+
+            const getParticipants = () => {
+                if (mainMode === 'byNumber') {
+                    return Array.from(studentListEl.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
+                } else { // byName
+                    return nameInput.value.split('\n').map(name => name.trim()).filter(name => name !== '');
+                }
+            };
+
+            const handleRandomizeClick = () => {
+                const participants = getParticipants();
+                if (participants.length === 0) {
+                    resultsEl.innerHTML = '<p class="text-red-400 text-center col-span-full">กรุณาใส่ข้อมูลผู้เข้าร่วมอย่างน้อย 1 คน</p>';
+                    return;
+                }
+                const count = parseInt(countInputEl.value);
+                if (isNaN(count) || count < 1) {
+                    resultsEl.innerHTML = `<p class="text-red-400 text-center col-span-full">กรุณาใส่${subMode === 'byGroupCount' ? 'จำนวนกลุ่ม' : 'จำนวนสมาชิก'}ที่ถูกต้อง</p>`;
+                    return;
+                }
+                
+                showAnimation(participants);
+
+                setTimeout(() => {
+                    let groups;
+                    const shuffledParticipants = shuffleArray([...participants]);
+                    if (subMode === 'byGroupCount') {
+                        groups = randomizeByGroupCount(shuffledParticipants, count);
+                    } else {
+                        groups = randomizeByMemberCount(shuffledParticipants, count);
+                    }
+                    displayResults(groups);
+                    hideAnimation();
+                }, 1800);
+            };
+
+            const showAnimation = (participants) => {
+                spinnerContainer.innerHTML = '';
+                const columnCount = Math.max(3, Math.min(participants.length, 5));
+                for (let i = 0; i < columnCount; i++) {
+                    const column = document.createElement('div');
+                    column.className = 'spinner-column';
+                    let itemsForColumn = [...participants, ...participants, ...participants].sort(() => Math.random() - 0.5).slice(0, 20);
+                    itemsForColumn.forEach(item => {
+                        const span = document.createElement('span');
+                        span.textContent = item;
+                        column.appendChild(span);
+                    });
+                    spinnerContainer.appendChild(column);
+                    const randomDuration = 1 + Math.random() * 0.5;
+                    column.style.animation = `spin ${randomDuration}s cubic-bezier(0.25, 1, 0.5, 1) forwards`;
+                }
+                animationOverlay.classList.remove('hidden');
+                animationOverlay.classList.add('flex');
+            };
+
+            const hideAnimation = () => {
+                animationOverlay.classList.add('hidden');
+                animationOverlay.classList.remove('flex');
+            };
+            
+            const shuffleArray = (array) => {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            };
+            
+            const randomizeByGroupCount = (participants, groupCount) => {
+                const groups = Array.from({ length: groupCount }, () => []);
+                participants.forEach((participant, index) => {
+                    groups[index % groupCount].push(participant);
+                });
+                return groups;
+            };
+            
+            const randomizeByMemberCount = (participants, membersPerGroup) => {
+                const groups = [];
+                while(participants.length > 0) {
+                    const newGroup = participants.splice(0, membersPerGroup);
+                    groups.push(newGroup);
+                }
+                return groups;
+            };
+
+            const generateStudentCheckboxes = () => {
+                studentListEl.innerHTML = '';
+                const start = parseInt(startNumberEl.value);
+                const end = parseInt(endNumberEl.value);
+                if (isNaN(start) || isNaN(end) || start > end || start < 1) {
+                    studentListEl.innerHTML = '<p class="text-red-400 col-span-full text-center">กรุณาใส่ช่วงเลขที่ให้ถูกต้อง</p>';
+                    return;
+                }
+                for (let i = start; i <= end; i++) {
+                    const studentDiv = document.createElement('div');
+                    studentDiv.className = 'flex items-center justify-center p-2 rounded-md cursor-pointer transition-all duration-200';
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = `student-${i}`;
+                    checkbox.value = i;
+                    checkbox.checked = true;
+                    checkbox.className = 'hidden';
+                    const label = document.createElement('label');
+                    label.htmlFor = `student-${i}`;
+                    label.textContent = i;
+                    label.className = 'w-full h-full text-center cursor-pointer font-medium';
+                    studentDiv.appendChild(checkbox);
+                    studentDiv.appendChild(label);
+                    studentDiv.addEventListener('click', () => {
+                        checkbox.checked = !checkbox.checked;
+                        updateCheckboxStyle(studentDiv, checkbox.checked);
+                    });
+                    updateCheckboxStyle(studentDiv, checkbox.checked);
+                    studentListEl.appendChild(studentDiv);
+                }
+            };
+            
+            const updateCheckboxStyle = (div, isChecked) => {
+                if (isChecked) {
+                    div.classList.remove('bg-gray-800', 'text-gray-400');
+                    div.classList.add('bg-blue-600', 'text-white', 'font-bold');
+                } else {
+                    div.classList.remove('bg-blue-600', 'text-white', 'font-bold');
+                    div.classList.add('bg-gray-800', 'text-gray-400');
+                }
+            };
+
+            const toggleAllCheckboxes = (shouldSelect) => {
+                const checkboxes = studentListEl.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(checkbox => {
+                    if (checkbox.checked !== shouldSelect) {
+                        checkbox.checked = shouldSelect;
+                        updateCheckboxStyle(checkbox.parentElement, shouldSelect);
+                    }
+                });
+            };
+
+            const displayResults = (groups) => {
+                resultsEl.innerHTML = '';
+                if (groups.length === 0) {
+                     resultsEl.innerHTML = '<p class="text-gray-500 text-center col-span-full">ไม่มีผลลัพธ์</p>';
+                     return;
+                }
+                groups.forEach((group, index) => {
+                    const groupCard = document.createElement('div');
+                    groupCard.className = 'flex flex-col bg-gray-900/50 rounded-lg p-4 border border-gray-700';
+                    const title = document.createElement('h3');
+                    title.className = 'text-lg font-semibold text-blue-400 mb-3';
+                    title.textContent = `กลุ่มที่ ${index + 1}`;
+                    const memberList = document.createElement('div');
+                    memberList.className = 'flex flex-wrap gap-2';
+                    if (group.length > 0) {
+                        // Sort if they are numbers
+                        if (mainMode === 'byNumber') {
+                            group.sort((a, b) => parseInt(a) - parseInt(b));
+                        }
+                        group.forEach(member => {
+                            const memberChip = document.createElement('span');
+                            memberChip.className = 'bg-blue-900/50 text-blue-200 font-medium px-3 py-1 rounded-full border border-blue-800';
+                            memberChip.textContent = mainMode === 'byNumber' ? `เลขที่ ${member}` : member;
+                            memberList.appendChild(memberChip);
+                        });
+                    } else {
+                        const noMemberText = document.createElement('p');
+                        noMemberText.className = 'text-sm text-gray-500';
+                        noMemberText.textContent = 'ไม่มีสมาชิก';
+                        memberList.appendChild(noMemberText);
+                    }
+                    groupCard.appendChild(title);
+                    groupCard.appendChild(memberList);
+                    resultsEl.appendChild(groupCard);
+                });
+            };
+
+            // --- Initial Setup ---
+            mainModeByNumberBtn.addEventListener('click', () => setMainMode('byNumber'));
+            mainModeByNameBtn.addEventListener('click', () => setMainMode('byName'));
+            subModeByGroupCountBtn.addEventListener('click', () => setSubMode('byGroupCount'));
+            subModeByMemberCountBtn.addEventListener('click', () => setSubMode('byMemberCount'));
+            generateListBtn.addEventListener('click', generateStudentCheckboxes);
+            randomizeBtn.addEventListener('click', handleRandomizeClick);
+            resetBtn.addEventListener('click', resetAll);
+            selectAllBtn.addEventListener('click', () => toggleAllCheckboxes(true));
+            deselectAllBtn.addEventListener('click', () => toggleAllCheckboxes(false));
+
+            // Set initial state on page load
+            resetAll();
+        });
+    </script>
+</body>
+</html>
