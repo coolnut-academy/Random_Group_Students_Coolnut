@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>โปรแกรมสุ่มกลุ่มออนไลน์ - 3 โหมด</title>
+    <title>โปรแกรมสุ่มกลุ่มออนไลน์ - 3 โหมด By Coolnut</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,8 +18,18 @@
             background-color: #161b22;
             border: 1px solid #30363d;
             border-radius: 0.75rem;
-            padding: 1.5rem;
+            padding: 1rem;
             transition: all 0.3s ease-in-out;
+        }
+        @media (min-width: 640px) {
+            .card {
+                padding: 1.25rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .card {
+                padding: 1.5rem;
+            }
         }
         .neon-text {
             color: #58a6ff;
@@ -30,6 +40,12 @@
             border: 1px solid #30363d;
             color: #c9d1d9;
             border-radius: 0.375rem;
+            font-size: 0.875rem;
+        }
+        @media (min-width: 640px) {
+            .input-dark, .textarea-dark {
+                font-size: 1rem;
+            }
         }
         .input-dark:focus, .textarea-dark:focus {
             outline: none;
@@ -40,12 +56,19 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 0.75rem 1.5rem;
+            padding: 0.625rem 1rem;
             border-radius: 0.5rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease-in-out;
             border: 1px solid transparent;
+            font-size: 0.875rem;
+        }
+        @media (min-width: 640px) {
+            .btn {
+                padding: 0.75rem 1.5rem;
+                font-size: 1rem;
+            }
         }
         .btn-primary {
             background-color: #238636;
@@ -87,6 +110,35 @@
             border-color: #58a6ff;
             font-weight: 700;
         }
+        .btn-quiz {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+            border: 2px solid #ff6b6b;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            font-size: 1rem;
+            font-weight: 700;
+            padding: 0.75rem 1.5rem;
+            width: 100%;
+            max-width: 300px;
+        }
+        @media (min-width: 640px) {
+            .btn-quiz {
+                font-size: 1.125rem;
+                padding: 0.875rem 1.75rem;
+                width: auto;
+            }
+        }
+        @media (min-width: 1024px) {
+            .btn-quiz {
+                font-size: 1.25rem;
+                padding: 1rem 2rem;
+            }
+        }
+        .btn-quiz:hover {
+            background: linear-gradient(135deg, #ff5252 0%, #d32f2f 100%);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+            transform: translateY(-2px);
+        }
 
         /* Animation Overlay Styles */
         #animationOverlay { transition: opacity 0.3s ease-in-out; }
@@ -96,17 +148,23 @@
         @keyframes spin { from { transform: translateY(-90%); } to { transform: translateY(0%); } }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
-    <div class="w-full max-w-5xl mx-auto">
-        <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold neon-text">โปรแกรมสุ่มกลุ่มออนไลน์</h1>
-            <p class="text-gray-400 mt-2">สุดยอดเครื่องมือจัดกลุ่ม 3 โหมดในหนึ่งเดียว</p>
+<body class="min-h-screen flex items-center justify-center p-2 sm:p-4">
+    <div class="w-full max-w-7xl mx-auto">
+        <div class="text-center mb-4 sm:mb-6 md:mb-8">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold neon-text px-2">โปรแกรมสุ่มกลุ่มออนไลน์+สอบควิซ By Coolnut</h1>
+            <p class="text-gray-400 mt-2 text-sm sm:text-base">สุดยอดเครื่องมือจัดกลุ่ม 3 โหมดในหนึ่งเดียว</p>
+            <div class="mt-4 sm:mt-6 flex justify-center">
+                <a href="quiz.html" target="_blank" class="btn btn-quiz inline-flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 sm:w-6 sm:h-6"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                    สอบควิซ!!
+                </a>
+            </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
             <!-- Left Column: Input Source -->
-            <div class="card space-y-4">
-                <h2 class="text-xl font-semibold text-blue-300 border-b border-gray-700 pb-2">1. เลือกข้อมูลที่จะสุ่ม</h2>
+            <div class="card space-y-3 sm:space-y-4">
+                <h2 class="text-lg sm:text-xl font-semibold text-blue-300 border-b border-gray-700 pb-2">1. เลือกข้อมูลที่จะสุ่ม</h2>
                 <div class="flex space-x-2 bg-gray-900/50 p-1 rounded-lg">
                     <button id="mainModeByNumberBtn" class="btn btn-mode">สุ่มตามเลขที่</button>
                     <button id="mainModeByNameBtn" class="btn btn-mode">สุ่มตามรายชื่อ</button>
@@ -124,12 +182,12 @@
                     </div>
                     <button id="generateListBtn" class="btn btn-secondary w-full">สร้าง/อัปเดตรายชื่อ</button>
                     <div id="studentListContainer">
-                        <h3 class="text-lg font-semibold text-gray-300 mt-4 mb-2">เลือกนักเรียนที่มาเรียน:</h3>
-                        <div class="flex space-x-2 mb-4">
-                            <button id="selectAllBtn" class="btn btn-secondary btn-sm flex-grow">เลือกทั้งหมด</button>
-                            <button id="deselectAllBtn" class="btn btn-secondary btn-sm flex-grow">ไม่เลือกทั้งหมด</button>
+                        <h3 class="text-base sm:text-lg font-semibold text-gray-300 mt-3 sm:mt-4 mb-2">เลือกนักเรียนที่มาเรียน:</h3>
+                        <div class="flex space-x-2 mb-3 sm:mb-4">
+                            <button id="selectAllBtn" class="btn btn-secondary btn-sm flex-grow text-xs sm:text-sm">เลือกทั้งหมด</button>
+                            <button id="deselectAllBtn" class="btn btn-secondary btn-sm flex-grow text-xs sm:text-sm">ไม่เลือกทั้งหมด</button>
                         </div>
-                        <div id="studentList" class="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-8 gap-2"></div>
+                        <div id="studentList" class="grid grid-cols-4 xs:grid-cols-5 sm:grid-cols-6 md:grid-cols-8 gap-1.5 sm:gap-2"></div>
                     </div>
                 </div>
 
@@ -141,9 +199,9 @@
             </div>
 
             <!-- Right Column: Settings & Results -->
-            <div class="space-y-6">
-                <div class="card space-y-4">
-                    <h2 class="text-xl font-semibold text-blue-300 border-b border-gray-700 pb-2">2. กำหนดวิธีแบ่งกลุ่ม</h2>
+            <div class="space-y-3 sm:space-y-4 md:space-y-6">
+                <div class="card space-y-3 sm:space-y-4">
+                    <h2 class="text-lg sm:text-xl font-semibold text-blue-300 border-b border-gray-700 pb-2">2. กำหนดวิธีแบ่งกลุ่ม</h2>
                     <div class="flex space-x-2 bg-gray-900/50 p-1 rounded-lg">
                          <button id="subModeByGroupCountBtn" class="btn btn-mode">จำนวนกลุ่ม</button>
                          <button id="subModeByMemberCountBtn" class="btn btn-mode">สมาชิก/กลุ่ม</button>
@@ -152,8 +210,8 @@
                         <label for="countInput" id="countLabel" class="block text-sm font-medium text-gray-300 mb-1">จำนวนกลุ่มที่ต้องการ:</label>
                         <input type="number" id="countInput" value="4" min="1" class="input-dark w-full p-2">
                     </div>
-                    <button id="randomizeBtn" class="btn btn-primary w-full text-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M18 6l-4 4h3v4h-3l4 4"/><path d="M6 18l4-4H7v-4h3l-4-4"/></svg>
+                    <button id="randomizeBtn" class="btn btn-primary w-full text-base sm:text-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 sm:w-6 sm:h-6"><path d="M18 6l-4 4h3v4h-3l4 4"/><path d="M6 18l4-4H7v-4h3l-4-4"/></svg>
                         สุ่มกลุ่มเลย!
                     </button>
                     <button id="resetBtn" class="btn btn-danger w-full">
@@ -162,9 +220,9 @@
                     </button>
                 </div>
                 <div class="card">
-                    <h2 class="text-xl font-semibold text-blue-300 border-b border-gray-700 pb-2">3. ผลการสุ่มกลุ่ม</h2>
-                    <div id="results" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                         <p class="text-gray-500 text-center col-span-full">กรอกข้อมูลแล้วกด "สุ่มกลุ่มเลย!"</p>
+                    <h2 class="text-lg sm:text-xl font-semibold text-blue-300 border-b border-gray-700 pb-2">3. ผลการสุ่มกลุ่ม</h2>
+                    <div id="results" class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                         <p class="text-gray-500 text-center col-span-full text-sm sm:text-base">กรอกข้อมูลแล้วกด "สุ่มกลุ่มเลย!"</p>
                     </div>
                 </div>
             </div>
@@ -345,7 +403,7 @@
                 }
                 for (let i = start; i <= end; i++) {
                     const studentDiv = document.createElement('div');
-                    studentDiv.className = 'flex items-center justify-center p-2 rounded-md cursor-pointer transition-all duration-200';
+                    studentDiv.className = 'flex items-center justify-center p-1.5 sm:p-2 rounded-md cursor-pointer transition-all duration-200 text-xs sm:text-sm';
                     const checkbox = document.createElement('input');
                     checkbox.type = 'checkbox';
                     checkbox.id = `student-${i}`;
@@ -395,12 +453,12 @@
                 }
                 groups.forEach((group, index) => {
                     const groupCard = document.createElement('div');
-                    groupCard.className = 'flex flex-col bg-gray-900/50 rounded-lg p-4 border border-gray-700';
+                    groupCard.className = 'flex flex-col bg-gray-900/50 rounded-lg p-3 sm:p-4 border border-gray-700';
                     const title = document.createElement('h3');
-                    title.className = 'text-lg font-semibold text-blue-400 mb-3';
+                    title.className = 'text-base sm:text-lg font-semibold text-blue-400 mb-2 sm:mb-3';
                     title.textContent = `กลุ่มที่ ${index + 1}`;
                     const memberList = document.createElement('div');
-                    memberList.className = 'flex flex-wrap gap-2';
+                    memberList.className = 'flex flex-wrap gap-1.5 sm:gap-2';
                     if (group.length > 0) {
                         // Sort if they are numbers
                         if (mainMode === 'byNumber') {
@@ -408,13 +466,13 @@
                         }
                         group.forEach(member => {
                             const memberChip = document.createElement('span');
-                            memberChip.className = 'bg-blue-900/50 text-blue-200 font-medium px-3 py-1 rounded-full border border-blue-800';
+                            memberChip.className = 'bg-blue-900/50 text-blue-200 font-medium px-2 py-1 sm:px-3 rounded-full border border-blue-800 text-xs sm:text-sm';
                             memberChip.textContent = mainMode === 'byNumber' ? `เลขที่ ${member}` : member;
                             memberList.appendChild(memberChip);
                         });
                     } else {
                         const noMemberText = document.createElement('p');
-                        noMemberText.className = 'text-sm text-gray-500';
+                        noMemberText.className = 'text-xs sm:text-sm text-gray-500';
                         noMemberText.textContent = 'ไม่มีสมาชิก';
                         memberList.appendChild(noMemberText);
                     }
